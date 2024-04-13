@@ -1,0 +1,155 @@
+﻿<Window x:Class="CupSystem.View.GroupView"
+        x:Name="window"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:CupSystem.View"
+        xmlns:vm="clr-namespace:CupSystem.ViewModel"
+        mc:Ignorable="d"
+        Title="{Binding Current.Id}" Height="650" Width="800">
+    <Window.DataContext>
+        <vm:GroupViewModel />
+    </Window.DataContext>
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="20" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="20" />
+            <RowDefinition Height="2*" />
+            <RowDefinition Height="200" />
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <TextBlock Grid.Column="0" Text="Klub" />
+            <TextBlock Grid.Column="1" Text="Navn" />
+            <TextBlock Grid.Column="2" Text="Distance" />
+            <TextBlock Grid.Column="3" Text="Score" />
+            <TextBlock Grid.Column="4" Text="Indgange" />
+            <TextBlock Grid.Column="5" Text="Snit" />
+            <TextBlock Grid.Column="6" Text="Pct. Snit" />
+            <TextBlock Grid.Column="7" TextAlignment="Right" Text="MP" />
+        </Grid>
+        <Grid Grid.Row="1">
+            <ItemsControl Margin="5,0,0,0" ItemsSource="{Binding SortedPlayers}" >
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel Orientation="Vertical" />
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" Text="{Binding ClubName}" />
+                            <TextBlock Grid.Column="1" Text="{Binding Name}" />
+                            <TextBlock Grid.Column="2" Text="{Binding Distance}" />
+                            <TextBlock Grid.Column="3" Text="{Binding GroupPoint}" />
+                            <TextBlock Grid.Column="4" Text="{Binding GroupInnings}" />
+                            <TextBlock Grid.Column="5" Text="{Binding GroupAverage, StringFormat=#.000}" />
+                            <TextBlock Grid.Column="6" Text="{Binding GroupAveragePercent, StringFormat={}{0:#.0}%}" />
+                            <TextBlock Grid.Column="7" TextAlignment="Right" Text="{Binding GroupMP}" />
+                        </Grid>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </Grid>
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <TextBlock Grid.Column="0" TextAlignment="Right" Text="Spiller 1" />
+            <TextBlock Grid.Column="1" TextAlignment="Center" Text="Serie" />
+            <TextBlock Grid.Column="2" TextAlignment="Center" Text="Score" />
+            <TextBlock Grid.Column="3" TextAlignment="Center" Text="Indgange" />
+            <TextBlock Grid.Column="4" TextAlignment="Center" Text="Score" />
+            <TextBlock Grid.Column="5" TextAlignment="Center" Text="Serie" />
+            <TextBlock Grid.Column="6" Text="Spiller 2" />
+        </Grid>
+        <Grid Margin="0,0,0,0" Grid.Row="3">
+            <ItemsControl Margin="5,0,0,0" ItemsSource="{Binding Current.Matches}" >
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel Orientation="Vertical" />
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Grid Margin="5">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" TextAlignment="Right" Text="{Binding A.Name}" />
+                            <TextBox Grid.Column="1" Text="{Binding SerieA, Mode=TwoWay}" />
+                            <TextBox Grid.Column="2" Text="{Binding ScoreA, Mode=TwoWay}" />
+                            <TextBox Grid.Column="3" Text="{Binding Innings, Mode=TwoWay}" />
+                            <TextBox Grid.Column="4" Text="{Binding ScoreB, Mode=TwoWay}" />
+                            <TextBox Grid.Column="5" Text="{Binding SerieB, Mode=TwoWay}" />
+                            <TextBlock Grid.Column="6" TextAlignment="Left" Text="{Binding B.Name}" />
+                            <Button  Grid.Column="7" Command="{Binding ElementName=window,Path=DataContext.RegisterMatchCmd}" CommandParameter="{Binding}">Registrer</Button>
+                            <Button  Grid.Column="8" Command="{Binding ElementName=window,Path=DataContext.ClearMatchCmd}" CommandParameter="{Binding}">Ryd</Button>
+                        </Grid>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </Grid>
+        <Grid Margin="0,0,0,0" Grid.Row="4">
+            <ItemsControl Margin="5,0,0,0" ItemsSource="{Binding SortedPlayers}" >
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel Orientation="Vertical" />
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" Text="{Binding ClubName}" />
+                            <TextBlock Grid.Column="1" Text="{Binding Name}" />
+                            <Button  Grid.Column="2" Command="{Binding ElementName=window,Path=DataContext.ClearPlayerCmd}" CommandParameter="{Binding}">Ryd Spiller Data</Button>
+                        </Grid>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </Grid>
+    </Grid>
+</Window>
