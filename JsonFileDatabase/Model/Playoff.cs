@@ -51,5 +51,10 @@
             return result;
         }
         public override string ToString() => "Playoff";
+
+        public void ClearAll()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

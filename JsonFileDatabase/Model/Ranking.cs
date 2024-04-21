@@ -63,5 +63,10 @@
         }
 
         public override string ToString() => "Resultat";
+
+        public void ClearAll()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

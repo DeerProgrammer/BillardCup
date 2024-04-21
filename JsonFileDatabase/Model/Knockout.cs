@@ -50,5 +50,10 @@
                 8 => "Kvartfinale",
                 _ => $"Sidste {Players.Count}"
             };
+
+        public void ClearAll()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

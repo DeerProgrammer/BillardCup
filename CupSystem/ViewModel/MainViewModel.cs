@@ -23,6 +23,7 @@ namespace CupSystem.ViewModel
         public RelayCommand PrintGroupCmd { get; set; }
         public RelayCommand StartFinalsCmd { get; set; }
         public RelayCommand<int> OpenRoundCmd { get; set; }
+        public RelayCommand<int> DeleteRoundCmd { get; set; }
 
         public MainViewModel()
         {
@@ -34,8 +35,26 @@ namespace CupSystem.ViewModel
             OpenRoundCmd = new RelayCommand<int>(OpenRound);
             StartFinalsCmd = new RelayCommand(StartFinals);
             PrintGroupCmd = new RelayCommand(PrintGroup);
+            DeleteRoundCmd = new RelayCommand<int>(DeleteRound);
 
             CurrentRounds.CollectionChanged += CurrentGroupsColChange;
+        }
+
+        private void DeleteRound(int id)
+        {
+            var roundToDelete = CurrentRounds.First(x => x.Id == id);
+
+            roundToDelete.ClearAll();
+
+            if (roundToDelete is Group g)
+                Current.Groups.Remove(g);
+            else if (roundToDelete is Ranking r)
+                Current.Rankings = null;
+            else
+                Current.Finales.Remove(roundToDelete);
+
+            CurrentRounds = [.. Current.Groups, .. Current.Finales];
+
         }
 
         private void PrintGroup()

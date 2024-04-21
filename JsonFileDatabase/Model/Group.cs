@@ -35,5 +35,10 @@
         }
 
         public override string ToString() => $"Pulje {Id}";
+
+        public void ClearAll()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
