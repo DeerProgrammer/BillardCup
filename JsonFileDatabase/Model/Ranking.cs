@@ -66,7 +66,7 @@
 
         public void ClearAll()
         {
-            throw new NotImplementedException();
+            //Do nothing;
         }
     }
 }

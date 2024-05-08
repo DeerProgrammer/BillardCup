@@ -38,7 +38,10 @@
 
         public void ClearAll()
         {
-            throw new NotImplementedException();
+            foreach (var match in Matches)
+            {
+                match.Clear();
+            }
         }
     }
 }

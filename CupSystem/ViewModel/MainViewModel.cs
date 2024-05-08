@@ -54,7 +54,6 @@ namespace CupSystem.ViewModel
                 Current.Finales.Remove(roundToDelete);
 
             CurrentRounds = [.. Current.Groups, .. Current.Finales];
-
         }
 
         private void PrintGroup()

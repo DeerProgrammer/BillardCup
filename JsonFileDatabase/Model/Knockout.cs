@@ -53,7 +53,10 @@
 
         public void ClearAll()
         {
-            throw new NotImplementedException();
+            foreach (var round in Rounds)
+            {
+                round.Clear();
+            }
         }
     }
 }

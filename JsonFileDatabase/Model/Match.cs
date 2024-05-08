@@ -42,7 +42,7 @@ namespace JsonFileDatabase.Model
 
         public override string ToString() => $"{Id}";
 
-        public void Clear()
+        public virtual void Clear()
         {
             A.GroupPoint -= ScoreA;
             A.GroupMP -= MpA;
@@ -83,6 +83,19 @@ namespace JsonFileDatabase.Model
                 B.FinalWins++;
             B.FinalPoint += ScoreB;
             B.FinalInnings += Innings;
+        }
+
+        public override void Clear()
+        {
+            A.FinalPoint -= ScoreA;
+            A.FinalInnings -= Innings;
+            if (AVundet)
+                A.FinalWins--;
+            if (BVundet)
+                B.FinalWins--;
+            B.FinalPoint -= ScoreB;
+            B.FinalInnings -= Innings;
+            base.Clear();
         }
     }
 }
