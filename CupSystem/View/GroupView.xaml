@@ -80,6 +80,7 @@
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
             <TextBlock Grid.Column="0" TextAlignment="Right" Text="Spiller 1" />
             <TextBlock Grid.Column="1" TextAlignment="Center" Text="Serie" />
