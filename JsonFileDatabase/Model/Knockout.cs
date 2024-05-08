@@ -7,11 +7,13 @@
         public List<Player> Players { get; set; } = [];
         public List<KnockoutMatch> Rounds { get; set; } = [];
         public bool IsFinale { get; set; } = false;
+        public string Type { get; set; } = "";
 
-        public Knockout(List<Player> qualified, bool isFinale = false) : this()
+        public Knockout(List<Player> qualified, string type = "A", bool isFinale = false) : this()
         {
             IsFinale = isFinale;
             Players = [.. qualified];
+            Type = type;
             GenerateMatches();
         }
 
@@ -46,9 +48,10 @@
         public override string ToString()
             => Players.Count switch
             {
-                4 => IsFinale ? "Finale" : "Semifinale",
-                8 => "Kvartfinale",
-                _ => $"Sidste {Players.Count}"
+                2 => $"{Type}-Finale",
+                4 => IsFinale ? $"{Type}-Finale" : $"{Type}-Semifinale",
+                8 => $"{Type}-Kvartfinale",
+                _ => $"{Type}-Sidste {Players.Count}"
             };
 
         public void ClearAll()

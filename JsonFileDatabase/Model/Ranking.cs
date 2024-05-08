@@ -8,7 +8,25 @@
         public Knockout Finale { get; set; } = finale;
         public Cup Cup { get; set; } = c;
 
-        public List<Player> SortPlayersResult()
+        public string Type => "";
+
+        public List<Player> SortPlayersResult()  => Cup.AllowLoserBracket ? SortDoubleKO() : SortSingleKO();
+
+        private List<Player> SortDoubleKO()
+        {
+            Players = [];
+            SortByAllKnockout("A");
+            SortByAllKnockout("B");
+
+            for (int i = 0; i < Players.Count; i++)
+            {
+                Players[i].FinalPlacement = i + 1;
+            }
+
+            return Players;
+        }
+
+        private List<Player> SortSingleKO()
         {
             Players = [];
             SortByFinale();
@@ -40,6 +58,18 @@
         private void SortByKnockout()
         {
             var noneFinalists = Cup.Finales[0].Players.Except(Players).ToList();
+
+            var ranked = noneFinalists.OrderByDescending(x => x.FinalWins)
+                                      .ThenByDescending(x => x.TotalAveragePercent)
+                                      .ThenByDescending(x => x.OrderedTotalSerie[0])
+                                      .ThenByDescending(x => x.OrderedTotalSerie[1])
+                                      .ToList();
+
+            Players.AddRange(ranked);
+        }
+        private void SortByAllKnockout(string type)
+        {
+            var noneFinalists = Cup.Finales.First(x => x.Type == type).Players.ToList();
 
             var ranked = noneFinalists.OrderByDescending(x => x.FinalWins)
                                       .ThenByDescending(x => x.TotalAveragePercent)

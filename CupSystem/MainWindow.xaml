@@ -47,7 +47,6 @@
                     <Button FontSize="15" Margin="5,0" Command="{Binding AddPlayersCmd}"> Deltagere </Button>
                     <Button FontSize="15" Margin="5,0" Command="{Binding CreateGroupCmd}">Opret Grupper</Button>
                     <Button FontSize="15" Margin="5,0" Command="{Binding PrintGroupCmd}">Print Grupper</Button>
-                    <Button FontSize="15" Margin="5,0" Command="{Binding StartFinalsCmd}">Opret KO Runde</Button>
                 </StackPanel>
                 <Border Grid.Row="2" Background="Black" />
                 <ItemsControl Grid.Row="3" ItemsSource="{Binding CurrentRounds, UpdateSourceTrigger=PropertyChanged}">
@@ -64,11 +63,14 @@
                                     <ColumnDefinition Width="10" />
                                     <ColumnDefinition Width="*" />
                                     <ColumnDefinition Width="10" />
-                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="120" />
+                                    <ColumnDefinition Width="80" />
+                                    <ColumnDefinition Width="5*" />
                                 </Grid.ColumnDefinitions>
                                 <Button Grid.Column="0" Command="{Binding ElementName=window,Path=DataContext.OpenRoundCmd}" CommandParameter="{Binding Id}" >Åbn</Button>
                                 <TextBlock Grid.Column="2" Text="{Binding }" FontSize="25"/>
-                                <Button Grid.Column="3" Background="Red" Command="{Binding ElementName=window,Path=DataContext.DeleteRoundCmd}" CommandParameter="{Binding Id}" >Slet</Button>
+                                <Button FontSize="15" Grid.Column="4" Margin="5,0" Command="{Binding ElementName=window,Path=DataContext.StartFinalsCmd}" CommandParameter="{Binding Id}">Næste runde</Button>
+                                <Button Grid.Column="5" Background="Red" Command="{Binding ElementName=window,Path=DataContext.DeleteRoundCmd}" CommandParameter="{Binding Id}" >Slet</Button>
                             </Grid>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>

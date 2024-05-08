@@ -12,6 +12,7 @@ namespace JsonFileDatabase.Model
         public int Multiply { get; set; } = 30;
         public int MinDistance { get; set; } = 80;
         public int SizeOfFinale { get; set; } = 32;
+        public bool AllowLoserBracket { get; set; } = false;
 
         public List<Player> Players { get; set; } = [];
         public List<Group> Groups { get; set; } = [];

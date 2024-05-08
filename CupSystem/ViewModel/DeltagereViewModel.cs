@@ -14,6 +14,7 @@ namespace CupSystem.ViewModel
 
         public RelayCommand CreateCmd { get; set; }
         public RelayCommand UpdateCmd { get; set; }
+        public RelayCommand DeleteCmd { get; set; }
         public RelayCommand PrintCmd { get; set; }
         public RelayCommand PrintByClubCmd { get; set; }
 
@@ -21,8 +22,19 @@ namespace CupSystem.ViewModel
         {
             CreateCmd = new RelayCommand(Create);
             UpdateCmd = new RelayCommand(Update);
+            DeleteCmd = new RelayCommand(Delete);
             PrintCmd = new RelayCommand(PrintByAvg);
             PrintByClubCmd = new RelayCommand(PrintByClub);
+        }
+
+        private void Delete()
+        {
+            Players.Remove(SelectedPlayer);
+
+            SelectedPlayer = new();
+            Players = [.. Players];
+            OnPropertyChanged(nameof(Players));
+            OnPropertyChanged(nameof(SelectedPlayer));
         }
 
         private void PrintByClub()

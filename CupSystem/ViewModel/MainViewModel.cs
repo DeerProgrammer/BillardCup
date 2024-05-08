@@ -21,7 +21,7 @@ namespace CupSystem.ViewModel
         public RelayCommand AddPlayersCmd { get; set; }
         public RelayCommand CreateGroupCmd { get; set; }
         public RelayCommand PrintGroupCmd { get; set; }
-        public RelayCommand StartFinalsCmd { get; set; }
+        public RelayCommand<int> StartFinalsCmd { get; set; }
         public RelayCommand<int> OpenRoundCmd { get; set; }
         public RelayCommand<int> DeleteRoundCmd { get; set; }
 
@@ -33,7 +33,7 @@ namespace CupSystem.ViewModel
             AddPlayersCmd = new RelayCommand(AddPlayers);
             CreateGroupCmd = new RelayCommand(CreateGroup);
             OpenRoundCmd = new RelayCommand<int>(OpenRound);
-            StartFinalsCmd = new RelayCommand(StartFinals);
+            StartFinalsCmd = new RelayCommand<int>(StartFinals);
             PrintGroupCmd = new RelayCommand(PrintGroup);
             DeleteRoundCmd = new RelayCommand<int>(DeleteRound);
 
@@ -53,7 +53,7 @@ namespace CupSystem.ViewModel
             else
                 Current.Finales.Remove(roundToDelete);
 
-            CurrentRounds = [.. Current.Groups, .. Current.Finales];
+            CurrentRounds = [.. Current.Groups.OrderBy(x => x.Id), .. Current.Finales];
         }
 
         private void PrintGroup()
@@ -83,16 +83,16 @@ namespace CupSystem.ViewModel
                 ? string.Concat(value.AsSpan(0, maxLength), truncationSuffix)
                 : value;
 
-        private void StartFinals()
+        private void StartFinals(int id)
         {
-            var lastRound = CurrentRounds.Last();
-            if (lastRound is Group)
+            var round = CurrentRounds.First(x => x.Id == id);
+            if (round is Group)
                 FirstRound();
-            else if (lastRound is Knockout k2 && k2.IsFinale)
+            else if (round is Knockout k2 && k2.IsFinale)
                 Result(k2);
-            else if (lastRound is Knockout k && k.Players.Count == 4)
-                LastRound(lastRound);
-            else NextRound(lastRound);
+            else if (round is Knockout k && k.Players.Count == 4)
+                LastRound(round);
+            else NextRound(round);
 
             OnPropertyChanged(nameof(Current));
             OnPropertyChanged(nameof(CurrentRounds));
@@ -103,26 +103,35 @@ namespace CupSystem.ViewModel
             var result = new Ranking(Current, finale);
 
             Current.Rankings = result;
-            CurrentRounds = [.. Current.Groups, .. Current.Finales, Current.Rankings];
+            CurrentRounds = [.. Current.Groups.OrderBy(x => x.Id), .. Current.Finales, Current.Rankings];
         }
 
         private void LastRound(IRound lastRound)
         {
             var finalists = lastRound.SortPlayersResult();
             var theRest = lastRound.Players.Except(finalists);
-            var round = new Knockout([finalists[0], ..theRest, finalists[1]], true);
 
-            Current.Finales.Add(round);
-            CurrentRounds = [.. Current.Groups, .. Current.Finales];
+            if (Current.AllowLoserBracket)
+            {
+                var round = new Knockout([.. finalists], lastRound.Type, true);
+                Current.Finales.Add(round);
+            }
+            else
+            {
+                var round = new Knockout([finalists[0], .. theRest, finalists[1]], lastRound.Type, true);
+                Current.Finales.Add(round);
+            }
+
+            CurrentRounds = [.. Current.Groups.OrderBy(x => x.Id), .. Current.Finales];
         }
 
         private void NextRound(IRound lastRound)
         {
             var result = lastRound.SortPlayersResult();
-            var round = new Knockout(result);
+            var round = new Knockout(result, lastRound.Type);
 
             Current.Finales.Add(round);
-            CurrentRounds = [.. Current.Groups, .. Current.Finales];
+            CurrentRounds = [.. Current.Groups.OrderBy(x => x.Id), .. Current.Finales];
         }
 
         private void FirstRound()
@@ -135,7 +144,21 @@ namespace CupSystem.ViewModel
                 round = new Playoff(LowestPowerOfTwoSize(Current.SizeOfFinale), ranked);
 
             Current.Finales.Add(round);
-            CurrentRounds = [.. Current.Groups, .. Current.Finales];
+
+            if (Current.AllowLoserBracket)
+            {
+                IRound lRound;
+                var losers = RankGroupPlayersAndSkipSize(Current.Groups, Current.SizeOfFinale);
+
+                if (IsPowerOfTwo(losers.Count))
+                    lRound = new Knockout(losers, "B");
+                else
+                    lRound = new Playoff(LowestPowerOfTwoSize(losers.Count), losers, "B");
+
+                Current.Finales.Add(lRound);
+            }
+            
+            CurrentRounds = [.. Current.Groups.OrderBy(x => x.Id), .. Current.Finales];
         }
 
         private static bool IsPowerOfTwo(int x) => (x & (x - 1)) == 0;
@@ -158,6 +181,14 @@ namespace CupSystem.ViewModel
             ranked.AddRange(SelectSeeds(groups, 3));
             //ranked.AddRange(SelectSeeds(groups, 4));
             return [.. ranked.Take(take)];
+        }
+        private static List<Player> RankGroupPlayersAndSkipSize(List<Group> groups, int skip)
+        {
+            var ranked = SelectSeeds(groups, 1);
+            ranked.AddRange(SelectSeeds(groups, 2));
+            ranked.AddRange(SelectSeeds(groups, 3));
+            //ranked.AddRange(SelectSeeds(groups, 4));
+            return [.. ranked.Skip(skip)];
         }
 
         private static List<Player> SelectSeeds(List<Group> groups, int number)
@@ -232,7 +263,7 @@ namespace CupSystem.ViewModel
                 Current.Groups.Add(group);
             }
             Current.Groups = [.. Current.Groups.OrderBy(x => x.Id)];
-            CurrentRounds = [.. Current.Groups, ..Current.Finales];
+            CurrentRounds = [.. Current.Groups.OrderBy(x => x.Id), ..Current.Finales];
             OnPropertyChanged(nameof(Current));
             OnPropertyChanged(nameof(CurrentRounds));
         }
@@ -261,7 +292,7 @@ namespace CupSystem.ViewModel
             if (fileDialog.ShowDialog() == true)
                 Current = JsonFileDb.Instance.FindCup(fileDialog.FileName);
 
-            CurrentRounds = [.. Current.Groups, .. Current.Finales];
+            CurrentRounds = [.. Current.Groups.OrderBy(x => x.Id), .. Current.Finales];
             if(Current.Rankings != null) CurrentRounds.Add(Current.Rankings);
             
             OnPropertyChanged(nameof(Current));

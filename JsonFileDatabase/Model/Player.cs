@@ -32,7 +32,7 @@ namespace JsonFileDatabase.Model
         public List<int> OrderedTotalSerie => [.. TotalSerie.OrderByDescending(x => x)];
         public int FinalPlacement { get; set; }
 
-        public override string ToString() => $"[{ClubName}] {Name} - {Average:0.###}";
+        public override string ToString() => $"[{GroupId}] [{ClubName}] {Name} - {Average:0.###}";
 
 
         public event PropertyChangedEventHandler? PropertyChanged;

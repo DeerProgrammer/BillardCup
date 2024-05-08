@@ -3,12 +3,14 @@
     public class Playoff() : IRound
     {
         public int Id { get; set; } = Guid.NewGuid().GetHashCode();
+        public string Type { get; set; } = "";
 
         public List<Player> Players { get; set; } = [];
         public List<KnockoutMatch> Rounds { get; set; } = [];
         
-        public Playoff(int downToSize, List<Player> qualified) : this()
+        public Playoff(int downToSize, List<Player> qualified, string type = "A") : this()
         {
+            Type = type;
             Players = qualified;
             int playAs = downToSize * 2;
             List<Player?> empties = [];
@@ -50,7 +52,7 @@
             }
             return result;
         }
-        public override string ToString() => "Playoff";
+        public override string ToString() => $"{Type}-Playoff";
 
         public void ClearAll()
         {

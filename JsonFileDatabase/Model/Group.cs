@@ -6,6 +6,8 @@
         public List<Player> Players { get; } = [];
         public List<Match> Matches { get; set; } = [];
 
+        public string Type => "";
+
         public Group(int id, List<Player> players)
         {
             Id = id;
