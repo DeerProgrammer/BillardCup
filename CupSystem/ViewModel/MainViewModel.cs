@@ -113,7 +113,7 @@ namespace CupSystem.ViewModel
 
             if (Current.AllowLoserBracket)
             {
-                var round = new Knockout([.. finalists], lastRound.Type, true);
+                var round = new Knockout([finalists[0], .. theRest, finalists[1]], lastRound.Type, true);
                 Current.Finales.Add(round);
             }
             else
@@ -179,7 +179,7 @@ namespace CupSystem.ViewModel
             var ranked = SelectSeeds(groups, 1);
             ranked.AddRange(SelectSeeds(groups, 2));
             ranked.AddRange(SelectSeeds(groups, 3));
-            //ranked.AddRange(SelectSeeds(groups, 4));
+            ranked.AddRange(SelectSeeds(groups, 4));
             return [.. ranked.Take(take)];
         }
         private static List<Player> RankGroupPlayersAndSkipSize(List<Group> groups, int skip)
@@ -187,7 +187,7 @@ namespace CupSystem.ViewModel
             var ranked = SelectSeeds(groups, 1);
             ranked.AddRange(SelectSeeds(groups, 2));
             ranked.AddRange(SelectSeeds(groups, 3));
-            //ranked.AddRange(SelectSeeds(groups, 4));
+            ranked.AddRange(SelectSeeds(groups, 4));
             return [.. ranked.Skip(skip)];
         }
 
