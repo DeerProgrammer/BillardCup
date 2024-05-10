@@ -54,7 +54,6 @@ namespace CupSystem.ViewModel
                 Current.Finales.Remove(roundToDelete);
 
             CurrentRounds = [.. Current.Groups.OrderBy(x => x.Id), .. Current.Finales];
-
             OnPropertyChanged(nameof(Current));
             OnPropertyChanged(nameof(CurrentRounds));
         }
@@ -116,7 +115,7 @@ namespace CupSystem.ViewModel
 
             if (Current.AllowLoserBracket)
             {
-                var round = new Knockout([.. finalists], lastRound.Type, true);
+                var round = new Knockout([finalists[0], .. theRest, finalists[1]], lastRound.Type, true);
                 Current.Finales.Add(round);
             }
             else
