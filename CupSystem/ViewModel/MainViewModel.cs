@@ -54,6 +54,8 @@ namespace CupSystem.ViewModel
                 Current.Finales.Remove(roundToDelete);
 
             CurrentRounds = [.. Current.Groups.OrderBy(x => x.Id), .. Current.Finales];
+            OnPropertyChanged(nameof(Current));
+            OnPropertyChanged(nameof(CurrentRounds));
         }
 
         private void PrintGroup()
