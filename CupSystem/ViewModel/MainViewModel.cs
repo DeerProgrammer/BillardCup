@@ -54,6 +54,9 @@ namespace CupSystem.ViewModel
                 Current.Finales.Remove(roundToDelete);
 
             CurrentRounds = [.. Current.Groups.OrderBy(x => x.Id), .. Current.Finales];
+
+            OnPropertyChanged(nameof(Current));
+            OnPropertyChanged(nameof(CurrentRounds));
         }
 
         private void PrintGroup()
@@ -176,18 +179,22 @@ namespace CupSystem.ViewModel
 
         private static List<Player> RankGroupPlayersAndTakeSize(List<Group> groups, int take)
         {
-            var ranked = SelectSeeds(groups, 1);
-            ranked.AddRange(SelectSeeds(groups, 2));
-            ranked.AddRange(SelectSeeds(groups, 3));
-            //ranked.AddRange(SelectSeeds(groups, 4));
+            var ranked = Rank(groups);
             return [.. ranked.Take(take)];
         }
-        private static List<Player> RankGroupPlayersAndSkipSize(List<Group> groups, int skip)
+
+        private static List<Player> Rank(List<Group> groups)
         {
             var ranked = SelectSeeds(groups, 1);
             ranked.AddRange(SelectSeeds(groups, 2));
             ranked.AddRange(SelectSeeds(groups, 3));
-            //ranked.AddRange(SelectSeeds(groups, 4));
+            ranked.AddRange(SelectSeeds(groups, 4));
+            return ranked;
+        }
+
+        private static List<Player> RankGroupPlayersAndSkipSize(List<Group> groups, int skip)
+        {
+            var ranked = Rank(groups);
             return [.. ranked.Skip(skip)];
         }
 
