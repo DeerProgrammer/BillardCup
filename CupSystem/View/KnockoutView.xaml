@@ -47,10 +47,10 @@
                             <TextBlock Grid.Row="0" Grid.Column="0" Text="#" />
                             <TextBlock Grid.Row="0" Grid.Column="1" Text="Navn" />
                             <TextBlock Grid.Row="0" Grid.Column="2" Text="Distance" />
-                            <TextBlock Grid.Row="0" Grid.Column="2" Text="Score" />
-                            <TextBlock Grid.Row="0" Grid.Column="3" Text="Serie" />
-                            <TextBlock Grid.Row="0" Grid.Column="4" Text="Indgange" />
-                            <TextBlock Grid.Row="0" Grid.Column="5" Text="Vinder" />
+                            <TextBlock Grid.Row="0" Grid.Column="3" Text="Score" />
+                            <TextBlock Grid.Row="0" Grid.Column="4" Text="Serie" />
+                            <TextBlock Grid.Row="0" Grid.Column="5" Text="Indgange" />
+                            <TextBlock Grid.Row="0" Grid.Column="6" Text="Vinder" />
                             <TextBlock Grid.Row="1" Grid.Column="0" Text="{Binding ASeed}" />
                             <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding A.Name}" />
                             <TextBlock Grid.Row="1" Grid.Column="2" Text="{Binding A.Distance}" />
@@ -59,7 +59,7 @@
                             <RadioButton Grid.Row="1" Grid.Column="6" IsChecked="{Binding AVundet}" GroupName="{Binding ASeed}"/>
                             <TextBlock Grid.Row="2" Grid.Column="0" Text="{Binding BSeed}" />
                             <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding B.Name}" />
-                            <TextBlock Grid.Row="1" Grid.Column="2" Text="{Binding A.Distance}" />
+                            <TextBlock Grid.Row="2" Grid.Column="2" Text="{Binding A.Distance}" />
                             <TextBox   Grid.Row="2" Grid.Column="3" Text="{Binding ScoreB, Mode=TwoWay}" />
                             <TextBox   Grid.Row="2" Grid.Column="4" Text="{Binding SerieB, Mode=TwoWay}" />
                             <RadioButton Grid.Row="2" Grid.Column="6" IsChecked="{Binding BVundet}" GroupName="{Binding ASeed}"/>
