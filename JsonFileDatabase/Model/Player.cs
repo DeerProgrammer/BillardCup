@@ -33,7 +33,15 @@ namespace JsonFileDatabase.Model
         public int FinalPlacement { get; set; }
 
         public override string ToString() => $"[{GroupId}] [{ClubName}] {Name} - {Average:0.###}";
+        public override bool Equals(object? obj)
+        {
+            if (obj is null) return false;
 
+            var other = (Player)obj;
+            if (Name == other.Name && ClubName == other.ClubName) return true;
+
+            return false;
+        }
 
         public event PropertyChangedEventHandler? PropertyChanged;
 

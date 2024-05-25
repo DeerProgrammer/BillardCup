@@ -7,17 +7,17 @@ namespace CupSystem.ViewModel
     {
         public Group? Current { get; set; }
         public List<Player> Players { get; set; } = [];
-        public Player? Selected { get; set; }
-        public List<Player> SortedPlayers 
+        List<Match> PlayerMatches { get; set; } = [];
+        public List<Player> SortedPlayers
         {
-            get 
+            get
             {
                 if (Current is null) return [];
                 else return [.. Current.SortPlayersResult()];
             }
         }
 
-        public RelayCommand AddCmd { get; set; }
+        public RelayCommand<Player> SelectCmd { get; set; }
         public RelayCommand<Match> RegisterMatchCmd { get; set; }
         public RelayCommand<Match> ClearMatchCmd { get; set; }
         public RelayCommand<Player> ClearPlayerCmd { get; set; }
@@ -25,10 +25,17 @@ namespace CupSystem.ViewModel
 
         public GroupViewModel()
         {
-            AddCmd = new RelayCommand(Add);
+            SelectCmd = new RelayCommand<Player>(Select);
             RegisterMatchCmd = new RelayCommand<Match>(RegisterMatch);
             ClearMatchCmd = new RelayCommand<Match>(ClearMatch);
             ClearPlayerCmd = new RelayCommand<Player>(ClearPlayerData);
+        }
+
+        private void Select(Player player)
+        {
+            PlayerMatches = [.. Current!.Matches.Where(m => m.A.Equals(player) || m.B.Equals(player))];
+
+            OnPropertyChanged(nameof(PlayerMatches));
         }
 
         private void ClearPlayerData(Player player)
@@ -44,21 +51,13 @@ namespace CupSystem.ViewModel
             match.Clear();
 
             OnPropertyChanged(nameof(Current));
+            OnPropertyChanged(nameof(Current.Matches));
             OnPropertyChanged(nameof(SortedPlayers));
         }
 
         private void RegisterMatch(Match m)
         {
             m.RegisterMatch();
-
-            OnPropertyChanged(nameof(Current));
-            OnPropertyChanged(nameof(SortedPlayers));
-        }
-
-        private void Add()
-        {
-            if(Selected != null && Current != null)
-                Current.Players.Add(Selected);
 
             OnPropertyChanged(nameof(Current));
             OnPropertyChanged(nameof(SortedPlayers));

@@ -17,9 +17,8 @@
             <RowDefinition Height="*" />
             <RowDefinition Height="20" />
             <RowDefinition Height="2*" />
-            <RowDefinition Height="200" />
         </Grid.RowDefinitions>
-        <Grid Grid.Row="0">
+        <Grid Grid.Row="0" Margin="5,0,0,0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="*" />
@@ -28,6 +27,8 @@
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="60" />
             </Grid.ColumnDefinitions>
             <TextBlock Grid.Column="0" Text="Klub" />
             <TextBlock Grid.Column="1" Text="Navn" />
@@ -36,10 +37,10 @@
             <TextBlock Grid.Column="4" Text="Indgange" />
             <TextBlock Grid.Column="5" Text="Snit" />
             <TextBlock Grid.Column="6" Text="Pct. Snit" />
-            <TextBlock Grid.Column="7" TextAlignment="Right" Text="MP" />
+            <TextBlock Grid.Column="7" Text="MP" />
         </Grid>
-        <Grid Grid.Row="1">
-            <ItemsControl Margin="5,0,0,0" ItemsSource="{Binding SortedPlayers}" >
+        <ScrollViewer Margin="0,0,0,0" Grid.Row="1" VerticalScrollBarVisibility="Auto">
+            <ItemsControl Margin="5,0,0,0" ItemsSource="{Binding SortedPlayers}" ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Auto" AlternationCount="2">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
                         <StackPanel Orientation="Vertical" />
@@ -47,7 +48,7 @@
                 </ItemsControl.ItemsPanel>
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <Grid>
+                        <Grid x:Name="FooBar" Margin="0,2,0,2">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="*" />
@@ -56,6 +57,8 @@
                                 <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="60" />
                             </Grid.ColumnDefinitions>
                             <TextBlock Grid.Column="0" Text="{Binding ClubName}" />
                             <TextBlock Grid.Column="1" Text="{Binding Name}" />
@@ -64,12 +67,18 @@
                             <TextBlock Grid.Column="4" Text="{Binding GroupInnings}" />
                             <TextBlock Grid.Column="5" Text="{Binding GroupAverage, StringFormat=#.000}" />
                             <TextBlock Grid.Column="6" Text="{Binding GroupAveragePercent, StringFormat={}{0:#.0}%}" />
-                            <TextBlock Grid.Column="7" TextAlignment="Right" Text="{Binding GroupMP}" />
+                            <TextBlock Grid.Column="7" Text="{Binding GroupMP}" />
+                            <Button  Grid.Column="8" Command="{Binding ElementName=window,Path=DataContext.ClearPlayerCmd}" CommandParameter="{Binding}">Ryd Data</Button>
                         </Grid>
+                        <DataTemplate.Triggers>
+                            <Trigger Property="ItemsControl.AlternationIndex" Value="1">
+                                <Setter Property="Background" Value="lightgray" TargetName="FooBar"/>
+                            </Trigger>
+                        </DataTemplate.Triggers>
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
-        </Grid>
+        </ScrollViewer>
         <Grid Grid.Row="2">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
@@ -90,8 +99,8 @@
             <TextBlock Grid.Column="5" TextAlignment="Center" Text="Serie" />
             <TextBlock Grid.Column="6" Text="Spiller 2" />
         </Grid>
-        <Grid Margin="0,0,0,0" Grid.Row="3">
-            <ItemsControl Margin="5,0,0,0" ItemsSource="{Binding Current.Matches}" >
+        <ScrollViewer Margin="0,0,0,0" Grid.Row="3" VerticalScrollBarVisibility="Auto">
+            <ItemsControl Margin="5,0,0,0" ItemsSource="{Binding Current.Matches}" ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Auto">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
                         <StackPanel Orientation="Vertical" />
@@ -124,33 +133,6 @@
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
-        </Grid>
-        <Grid Margin="0,0,0,0" Grid.Row="4">
-            <ItemsControl Margin="5,0,0,0" ItemsSource="{Binding SortedPlayers}" >
-                <ItemsControl.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <StackPanel Orientation="Vertical" />
-                    </ItemsPanelTemplate>
-                </ItemsControl.ItemsPanel>
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate>
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="*" />
-                            </Grid.ColumnDefinitions>
-                            <TextBlock Grid.Column="0" Text="{Binding ClubName}" />
-                            <TextBlock Grid.Column="1" Text="{Binding Name}" />
-                            <Button  Grid.Column="2" Command="{Binding ElementName=window,Path=DataContext.ClearPlayerCmd}" CommandParameter="{Binding}">Ryd Spiller Data</Button>
-                        </Grid>
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-            </ItemsControl>
-        </Grid>
+        </ScrollViewer>
     </Grid>
 </Window>
