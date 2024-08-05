@@ -1,0 +1,55 @@
+﻿@page "/"
+
+<h1 class="h1">Kommende kampe skribent</h1>
+<div class="container">
+    <div class="row">
+        <div class="col-3">
+            <div class="form-floating">
+                <InputText @bind-Value="HjemmeSponsor" type="text" class="form-control" aria-label="Hjemmebane sponsor" aria-describedby="basic-addon1" />
+                <label for="basic-addon1">Hjemmebane sponor</label>
+            </div>
+        </div>
+        <div class="col-3">
+            <div class="form-floating">
+                <InputText @bind-Value="UdeSponsor" type="text" class="form-control" aria-label="Udebane sponsor" aria-describedby="basic-addon2" />
+                <label for="basic-addon2">Udebane sponor</label>
+            </div>
+        </div>
+        <div class="col-3">
+            <div class="form-floating">
+                <InputNumber @bind-Value="UgeNr" type="number" class="form-control" aria-label="Ugenummer" aria-describedby="basic-addon3" />
+                <label for="basic-addon3">Udebane sponor</label>
+            </div>
+        </div>
+        <div class="col-3">
+            <div class="btn-group">
+                <button class="btn btn-primary">Opret opslag</button>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="form-floating">
+            <InputTextArea @bind-Value="HjemmeText" class="form-control" id="floatingTextarea1" style="height: 100px" />
+            <label for="floatingTextarea1">Hjemmebane text</label>
+        </div>
+    </div>
+    <div class="row">
+        <div class="form-floating">
+            <InputTextArea @bind-Value="UdeText" class="form-control" id="floatingTextarea2" style="height: 100px" />
+            <label for="floatingTextarea2">Udebane text</label>
+        </div>
+    </div>
+</div>
+
+@code {
+    private string HjemmeSponsor { get; set; } = string.Empty;
+    private string UdeSponsor { get; set; } = string.Empty;
+
+    private int UgeNr { get; set; } = 0;
+
+
+    private string HjemmeText { get; set; } = string.Empty;
+    private string UdeText { get; set; } = string.Empty;
+
+
+}
